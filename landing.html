@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BeeHappy — Sweet Technology for a Sustainable Future</title>
+  <link rel="icon" type="image/png" href="logo.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   { DEFAULT:'#0B1E36', mid:'#112944', light:'#1A3A5C' },
+            gold:   { DEFAULT:'#F5A623', bright:'#FFCA55', dark:'#C8820A' },
+            cyan:   { DEFAULT:'#0ECAD4', dark:'#0A9BA4' },
+          },
+          fontFamily: {
+            display: ['Montserrat','sans-serif'],
+            body:    ['Poppins','sans-serif'],
+          },
+        }
+      }
+    };
+  </script>
+
+<style>
+:root {
+  --navy:       #0B1E36;
+  --navy-mid:   #112944;
+  --navy-light: #1A3A5C;
+  --gold:       #F5A623;
+  --gold-bright:#FFCA55;
+  --gold-dark:  #C8820A;
+  --cyan:       #0ECAD4;
+  --glass-bg:   rgba(255,255,255,0.05);
+  --glass-bg2:  rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-border-gold: rgba(245,166,35,0.30);
+  --glow-gold:  0 0 30px rgba(245,166,35,0.45), 0 0 60px rgba(245,166,35,0.20);
+  --glow-cyan:  0 0 30px rgba(14,202,212,0.35);
+  --transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--navy);
+  color: #E8EEF6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── Custom cursor ────────────────────────────────── */
+.cursor-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); position: fixed; z-index: 9999;
+  pointer-events: none; transform: translate(-50%,-50%);
+  transition: transform 0.1s;
+}
+.cursor-ring {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(245,166,35,0.5);
+  position: fixed; z-index: 9998; pointer-events: none;
+  transform: translate(-50%,-50%);
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+/* ─── Mesh gradient background ─────────────────────── */
+.mesh-bg {
+  position: fixed; inset: 0; z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(245,166,35,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(14,202,212,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(17,41,68,0.9) 0%, transparent 70%),
+    linear-gradient(160deg, #0B1E36 0%, #0D2340 35%, #091829 70%, #060F1C 100%);
+  animation: meshShift 18s ease-in-out infinite alternate;
+}
+@keyframes meshShift {
+  0%   { background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%; }
+  100% { background-position: 30% 20%, 70% 80%, 60% 40%, 0% 0%; }
+}
+
+/* ─── Grain overlay ────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; opacity: 0.35;
+}
+
+/* ─── Hexagon grid overlay ─────────────────────────── */
+.hex-grid {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66zm0-2L2 49.1V17.9L28 2l26 15.9v31.2L28 64z' fill='none' stroke='rgba(245,166,35,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 56px 100px;
+}
+
+/* ═══════════════════════════════════════════════
+   BEES LAYER — removed
+═══════════════════════════════════════════════ */
+
+/* Wing flap */
+.swing-l { animation: sFlap 0.2s linear infinite alternate; transform-origin: 60% 50%; }
+.swing-r { animation: sFlap 0.2s linear infinite alternate-reverse; transform-origin: 40% 50%; }
+@keyframes sFlap { to { transform: scaleY(0.3) rotate(10deg); opacity: 0.6; } }
+
+/* ─── Glassmorphism base ───────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+}
+.glass-strong {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+}
+
+/* ─── Navbar ───────────────────────────────────────── */
+#navbar {
+  position: fixed; top: 0; width: 100%; z-index: 500;
+  transition: background 0.5s, box-shadow 0.5s, border-color 0.5s;
+  border-bottom: 1px solid transparent;
+}
+#navbar.scrolled {
+  background: rgba(11,30,54,0.88);
+  backdrop-filter: blur(18px);
+  border-color: rgba(245,166,35,0.12);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+}
+.nav-link {
+  position: relative; color: rgba(232,238,246,0.70);
+  font-size: .85rem; font-weight: 500; letter-spacing: .02em;
+  text-decoration: none; transition: color 0.25s;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1.5px; background: var(--gold);
+  transition: width 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.nav-link:hover { color: var(--gold-bright); }
+.nav-link:hover::after { width: 100%; }
+
+/* ─── CTA Buttons ──────────────────────────────────── */
+.btn-glow {
+  display: inline-flex; align-items: center; gap: .55rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #0B1E36; font-family: 'Montserrat', sans-serif;
+  font-weight: 700; font-size: .95rem; letter-spacing: .03em;
+  padding: .85rem 2rem; border-radius: 100px; border: none;
+  cursor: none; text-decoration: none;
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+  box-shadow: 0 4px 16px rgba(245,166,35,0.3);
+  position: relative; overflow: hidden;
+}
+.btn-glow::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.btn-glow:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: var(--glow-gold);
+}
+.btn-glow:hover::before { opacity: 1; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .55rem;
+  border: 1.5px solid rgba(245,166,35,0.4); color: rgba(255,203,69,0.9);
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: .95rem;
+  padding: .82rem 1.9rem; border-radius: 100px;
+  cursor: none; text-decoration: none;
+  transition: var(--transition), box-shadow 0.3s;
+  background: transparent;
+}
+.btn-ghost:hover {
+  border-color: var(--gold);
+  background: rgba(245,166,35,0.08);
+  box-shadow: 0 0 20px rgba(245,166,35,0.2);
+  color: var(--gold-bright);
+}
+
+/* ─── Section pill label ───────────────────────────── */
+.section-pill {
+  display: inline-flex; align-items: center; gap: .4rem;
+  border: 1px solid rgba(245,166,35,0.25);
+  background: rgba(245,166,35,0.08);
+  color: var(--gold); font-size: .73rem;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: .3rem .9rem; border-radius: 100px;
+}
+
+/* ─── Feature cards ────────────────────────────────── */
+.feat-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px; padding: 2rem 1.75rem;
+  transition: transform 0.4s cubic-bezier(.34,1.56,.64,1),
+              box-shadow 0.4s, border-color 0.4s;
+  cursor: default;
+}
+.feat-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(245,166,35,0.45);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,166,35,0.2), var(--glow-gold);
+}
+.feat-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(245,166,35,0.2), rgba(245,166,35,0.05));
+  border: 1px solid rgba(245,166,35,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: var(--gold);
+  transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), box-shadow 0.4s;
+}
+.feat-card:hover .feat-icon {
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 0 0 20px rgba(245,166,35,0.4);
+}
+.feat-bar {
+  height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-top: 1.25rem;
+}
+
+/* ─── Expandable benefit rows ──────────────────────── */
+.benefit-row {
+  border: 1px solid var(--glass-border);
+  border-radius: 18px; overflow: hidden;
+  transition: border-color 0.35s, box-shadow 0.35s;
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+}
+.benefit-row:hover, .benefit-row.open {
+  border-color: rgba(245,166,35,0.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.benefit-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 1.75rem; gap: 1rem;
+}
+.benefit-header-left { display: flex; align-items: center; gap: 1rem; }
+.benefit-icon-wrap {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 1.1rem;
+}
+.benefit-chevron {
+  color: var(--gold); font-size: .85rem;
+  transition: transform 0.35s cubic-bezier(.25,.8,.25,1);
+}
+.benefit-row.open .benefit-chevron { transform: rotate(180deg); }
+.benefit-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(.25,.8,.25,1), padding 0.35s;
+  padding: 0 1.75rem;
+}
+.benefit-row.open .benefit-body { max-height: 200px; padding-bottom: 1.5rem; }
+
+/* ─── Tilt cards ────────────────────────────────────── */
+.tilt-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px; padding: 2.25rem 2rem;
+  transition: box-shadow 0.3s, border-color 0.3s;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  cursor: default;
+}
+.tilt-card:hover {
+  border-color: rgba(245,166,35,0.3);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.5), var(--glow-gold);
+}
+.tilt-inner { transform-style: preserve-3d; }
+.tilt-shine {
+  position: absolute; inset: 0; border-radius: 24px;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 60%);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.tilt-card:hover .tilt-shine { opacity: 1; }
+
+/* ─── Team cards ───────────────────────────────────── */
+.team-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px; overflow: hidden;
+  transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), box-shadow 0.4s, border-color 0.4s;
+  position: relative;
+}
+.team-card:hover {
+  transform: translateY(-14px);
+  border-color: rgba(245,166,35,0.4);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,166,35,0.2);
+}
+.team-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.4s;
+}
+.team-card:hover::before { opacity: 1; }
+.team-avatar-ring {
+  width: 125px; height: 125px; border-radius: 50%;
+  border: 2px solid rgba(245,166,35,0.4);
+  padding: 3px; background: linear-gradient(135deg, rgba(245,166,35,0.3), rgba(14,202,212,0.15));
+  margin: 0 auto 1.25rem;
+  transition: box-shadow 0.4s;
+}
+.team-card:hover .team-avatar-ring {
+  box-shadow: 0 0 0 6px rgba(245,166,35,0.12), var(--glow-gold);
+}
+.team-photo-placeholder {
+  width: 100%; height: 100%; border-radius: 50%;
+  background: linear-gradient(135deg, #1A3A5C, #0B1E36);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800; font-size: 2rem; color: var(--gold);
+}
+.social-link {
+  width: 34px; height: 34px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: rgba(232,238,246,0.55); font-size: .85rem;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+  text-decoration: none;
+}
+.social-link:hover {
+  border-color: var(--gold); color: var(--gold);
+  background: rgba(245,166,35,0.1);
+}
+
+/* ─── Gallery ──────────────────────────────────────── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 220px;
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .gallery-grid { grid-template-columns: repeat(2,1fr); grid-auto-rows: 160px; }
+}
+@media (max-width: 480px) {
+  .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+}
+.gallery-item {
+  border-radius: 18px; overflow: hidden; position: relative;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--navy-mid);
+  cursor: pointer;
+}
+.gallery-item:nth-child(1) { grid-row: span 2; }
+.gallery-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.5s cubic-bezier(.25,.46,.45,.94), filter 0.5s;
+  filter: brightness(0.85);
+}
+.gallery-item:hover img {
+  transform: scale(1.08);
+  filter: brightness(0.6) saturate(1.2);
+}
+.gallery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(11,30,54,0.85) 0%, rgba(245,166,35,0.15) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .75rem; opacity: 0;
+  transition: opacity 0.4s;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay i { font-size: 1.8rem; color: #fff; }
+.gallery-overlay span { font-size: .8rem; color: rgba(255,255,255,0.8); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ─── Gallery Modal ──────────────────────────────── */
+.gallery-modal {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(11,30,54,0.95); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+  animation: fadeInModal 0.3s ease-out;
+}
+.gallery-modal.active { display: flex; }
+@keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+.gallery-modal-content {
+  position: relative; max-width: 90vw; max-height: 90vh;
+  animation: zoomInModal 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes zoomInModal { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.gallery-modal-image { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px; }
+.gallery-modal-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(245,166,35,0.2); border: 1px solid rgba(245,166,35,0.4);
+  color: var(--gold); font-size: 1.5rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+  z-index: 10000;
+}
+.gallery-modal-close:hover {
+  background: rgba(245,166,35,0.4);
+  box-shadow: 0 0 20px rgba(245,166,35,0.3);
+  transform: scale(1.1) rotate(90deg);
+}
+.gallery-item-clickable { cursor: pointer; }
+
+.gallery-placeholder {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .6rem;
+  color: rgba(255,255,255,0.15); font-size: .78rem; text-align: center;
+  border: 1.5px dashed rgba(245,166,35,0.12);
+  border-radius: 18px;
+}
+.gallery-placeholder i { font-size: 2rem; color: rgba(245,166,35,0.2); }
+
+/* ─── Contact (solo canales) ───────────────────────── */
+.material-input {
+  width: 100%; background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 1rem 1.2rem;
+  color: #E8EEF6; font-family: 'Poppins', sans-serif; font-size: .95rem;
+  transition: border-color 0.3s; outline: none;
+}
+.material-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(245,166,35,0.12);
+}
+.material-input::placeholder { color: rgba(255,255,255,0.3); }
+.material-label {
+  display: block; font-size: .78rem; font-weight: 600;
+  color: rgba(255,255,255,0.5); letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: .5rem;
+}
+
+/* ─── Scroll reveal ────────────────────────────────── */
+.sr {
+  opacity: 0; transform: translateY(36px);
+  transition: opacity 0.75s cubic-bezier(.22,.61,.36,1), transform 0.75s cubic-bezier(.22,.61,.36,1);
+}
+.sr.visible { opacity: 1; transform: translateY(0); }
+.sr-d1 { transition-delay: .08s; }
+.sr-d2 { transition-delay: .16s; }
+.sr-d3 { transition-delay: .24s; }
+.sr-d4 { transition-delay: .32s; }
+
+/* ─── Dividers ─────────────────────────────────────── */
+.gold-line {
+  height: 1px; width: 64px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ─── AI Section cards ─────────────────────────────── */
+.ai-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px; overflow: hidden;
+  transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), box-shadow 0.4s, border-color 0.4s;
+  position: relative;
+}
+.ai-card:hover {
+  border-color: rgba(245,166,35,0.35);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), var(--glow-gold);
+  transform: translateY(-6px);
+}
+.ai-card-header {
+  padding: 2rem 2rem 1.5rem;
+}
+.ai-screenshot {
+  width: 100%; position: relative; overflow: hidden;
+  background: rgba(6,15,28,0.6);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.ai-screenshot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.5s cubic-bezier(.25,.46,.45,.94);
+}
+.ai-card:hover .ai-screenshot img { transform: scale(1.03); }
+.ai-screenshot-placeholder {
+  width: 100%; height: 260px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1rem;
+  color: rgba(255,255,255,0.2); font-size: .85rem; text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(11,30,54,0.8) 0%, rgba(17,41,68,0.6) 100%);
+}
+.ai-screenshot-placeholder i { font-size: 3rem; color: rgba(245,166,35,0.25); }
+.ai-tag {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.2);
+  color: rgba(255,203,69,0.85); font-size: .7rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .25rem .75rem; border-radius: 100px; margin-bottom: 1rem;
+}
+.ai-tag.cyan {
+  background: rgba(14,202,212,0.08); border-color: rgba(14,202,212,0.2);
+  color: rgba(14,202,212,0.85);
+}
+
+/* ─── Stat glass ───────────────────────────────────── */
+.stat-glass {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 1.5rem 1.75rem;
+  text-align: center;
+}
+
+/* ─── Footer ───────────────────────────────────────── */
+footer { border-top: 1px solid rgba(255,255,255,0.07); }
+.footer-logo-placeholder {
+  height: 48px; display: flex; align-items: center; justify-content: center;
+  border: 1.5px dashed rgba(255,255,255,0.12); border-radius: 12px;
+  padding: 0 1.5rem; color: rgba(255,255,255,0.25); font-size: .8rem;
+  white-space: nowrap;
+}
+
+/* ─── Mobile navbar ────────────────────────────────── */
+#mobile-nav { display: none; }
+#mobile-nav.open { display: flex; flex-direction: column; }
+
+/* ─── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: rgba(245,166,35,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ─── Apicultor glow illustration ─────────────────── */
+.beekeeper-scene { position: relative; width: 100%; max-width: 480px; margin: 0 auto; }
+
+/* Glowing data particles */
+.data-particle {
+  position: absolute; border-radius: 50%;
+  background: var(--gold); opacity: 0;
+  animation: dataFloat 3s ease-in-out infinite;
+}
+@keyframes dataFloat {
+  0%   { opacity:0; transform:translate(0,0) scale(0); }
+  20%  { opacity:1; }
+  80%  { opacity:.5; }
+  100% { opacity:0; transform:translate(var(--dx),var(--dy)) scale(1.5); }
+}
+
+/* Beekeeper glow pulse */
+.keeper-glow { animation: keeperPulse 3s ease-in-out infinite; }
+@keyframes keeperPulse {
+  0%,100% { filter: drop-shadow(0 0 18px rgba(245,166,35,0.4)) drop-shadow(0 0 40px rgba(245,166,35,0.15)); }
+  50%      { filter: drop-shadow(0 0 32px rgba(245,166,35,0.65)) drop-shadow(0 0 70px rgba(245,166,35,0.25)) drop-shadow(0 0 100px rgba(14,202,212,0.12)); }
+}
+
+/* Tablet data pulse */
+.tablet-glow { animation: tabletPulse 2.2s ease-in-out infinite; }
+@keyframes tabletPulse {
+  0%,100% { filter: drop-shadow(0 0 6px rgba(14,202,212,0.6)); }
+  50%      { filter: drop-shadow(0 0 20px rgba(14,202,212,1)) drop-shadow(0 0 40px rgba(14,202,212,0.4)); }
+}
+
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+@keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+</style>
+</head>
+
+<body class="grain">
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Background layers -->
+<div class="mesh-bg"></div>
+<div class="hex-grid"></div>
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav id="navbar" class="py-4 px-6 lg:px-12" role="navigation" aria-label="Navegación principal">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <a href="#inicio" class="flex items-center gap-3 group" style="cursor:none;">
+      <img src="Logo.png" alt="BeeHappy Logo" class="w-9 h-9 rounded-xl object-cover">
+      <span class="font-display font-black text-lg text-white tracking-tight">
+        Bee<span style="color:var(--gold);">Happy</span>
+      </span>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#que-es"          class="nav-link">Sistema</a>
+      <a href="#caracteristicas" class="nav-link">Características</a>
+      <a href="#ia"              class="nav-link">Inteligencia Artificial</a>
+      <a href="#beneficios"      class="nav-link">Beneficios</a>
+      <a href="#equipo"          class="nav-link">Equipo</a>
+      <a href="#galeria"         class="nav-link">Galería</a>
+      <a href="#contacto" class="btn-glow" style="font-size:.82rem;padding:.65rem 1.4rem;">
+        <i class="fa-solid fa-paper-plane text-xs"></i> Contacto
+      </a>
+    </div>
+
+    <button id="hamburger" class="lg:hidden text-white p-2 rounded-lg" style="background:rgba(255,255,255,0.07);cursor:none;" aria-label="Abrir menú">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="lg:hidden flex-col gap-1 px-6 pt-3 pb-5 mt-3 glass" style="border-radius:16px;margin-top:.75rem;">
+    <a href="#que-es"          class="nav-link block py-2.5 border-b border-white/5" onclick="closeMobileNav()">Sistema</a>
+    <a href="#caracteristicas" class="nav-link block py-2.5 border-b border-white/5" onclick="closeMobileNav()">Características</a>
+    <a href="#ia"              class="nav-link block py-2.5 border-b border-white/5" onclick="closeMobileNav()">Inteligencia Artificial</a>
+    <a href="#beneficios"      class="nav-link block py-2.5 border-b border-white/5" onclick="closeMobileNav()">Beneficios</a>
+    <a href="#equipo"          class="nav-link block py-2.5 border-b border-white/5" onclick="closeMobileNav()">Equipo</a>
+    <a href="#galeria"         class="nav-link block py-2.5 border-b border-white/5" onclick="closeMobileNav()">Galería</a>
+    <a href="#contacto"        class="nav-link block py-2.5" onclick="closeMobileNav()">Contacto</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="inicio" class="relative min-h-screen flex flex-col justify-center px-6 lg:px-12 pt-28 pb-20 overflow-hidden z-10">
+
+  <div style="position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,0.08) 0%,transparent 65%);pointer-events:none;"></div>
+
+  <div class="max-w-7xl mx-auto w-full">
+    <div class="max-w-3xl">
+
+      <div class="section-pill sr mb-7">
+        <i class="fa-solid fa-satellite-dish text-xs"></i>
+        Monitoreo IoT Apícola ·
+      </div>
+
+      <h1 class="font-display font-black text-white sr sr-d1 mb-6 leading-[1.04]"
+          style="font-size:clamp(2.6rem,6vw,5.2rem);">
+        Sweet technology<br/>
+        <span style="background:linear-gradient(90deg,var(--gold),var(--gold-bright),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          for a sustainable
+        </span><br/>
+        future.
+      </h1>
+
+      <p class="sr sr-d2 text-lg leading-relaxed mb-10" style="color:rgba(232,238,246,0.65);max-width:540px;">
+        BeeHappy es el sistema inteligente que conecta tus colmenas al mundo digital, registrando temperatura, humedad, peso y actividad sonora en tiempo real para proteger tus abejas y maximizar tu producción.
+      </p>
+
+      <div class="sr sr-d3 flex flex-wrap gap-4 mb-14">
+        <a href="#que-es" class="btn-glow">
+          <i class="fa-solid fa-arrow-down text-sm"></i> Descubrir BeeHappy
+        </a>
+        <a href="#contacto" class="btn-ghost">
+          <i class="fa-regular fa-calendar text-sm"></i> Contáctanos 
+        </a>
+      </div>
+
+      <div class="sr sr-d4 flex flex-wrap gap-4">
+        <div class="stat-glass">
+          <p class="font-display font-black text-3xl" style="color:var(--gold);">4</p>
+          <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.45);">Sensores activos</p>
+        </div>
+        <div class="stat-glass">
+          <p class="font-display font-black text-3xl" style="color:var(--gold);">24/7</p>
+          <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.45);">Tiempo real</p>
+        </div>
+        <div class="stat-glass">
+          <p class="font-display font-black text-3xl" style="color:var(--gold);">IoT</p>
+          <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.45);">Conectado</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40" style="animation:bounce 2s ease-in-out infinite;">
+    <span class="text-xs tracking-widest uppercase" style="font-size:.68rem;letter-spacing:.2em;">Scroll</span>
+    <i class="fa-solid fa-chevron-down text-xs"></i>
+  </div>
+</section>
+
+
+<!-- ══════════════════ ¿QUÉ ES? ══════════════════ -->
+<section id="que-es" class="py-28 px-6 lg:px-12 relative z-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left: Text -->
+      <div>
+        <div class="section-pill sr mb-5">
+          <i class="fa-solid fa-circle-info text-xs"></i> ¿Qué es BeeHappy?
+        </div>
+        <h2 class="font-display font-black text-white sr sr-d1 mb-6 leading-tight" style="font-size:clamp(2rem,4vw,3.2rem);">
+          Datos inteligentes<br/>para colmenas <span style="color:var(--gold);">saludables</span>
+        </h2>
+        <div class="gold-line sr sr-d1 mb-6"></div>
+        <p class="sr sr-d2 leading-relaxed mb-5" style="color:rgba(232,238,246,0.65);">
+          BeeHappy es un sistema tecnológico de monitoreo continuo que instala una red de sensores de precisión dentro de cada colmena. Los datos se procesan en un microcontrolador y se transmiten a un servidor central accesible desde cualquier dispositivo.
+        </p>
+        <p class="sr sr-d3 leading-relaxed mb-8" style="color:rgba(232,238,246,0.55);">
+          El apicultor visualiza en tiempo real el estado de cada colmena, consulta registros históricos y recibe alertas automáticas ante condiciones anormales, sin necesidad de abrir físicamente las colmenas.
+        </p>
+
+        <div class="sr sr-d4 flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-eye-slash" style="color:var(--gold);font-size:.75rem;"></i>
+            </div>
+            <span style="color:rgba(232,238,246,0.7);font-size:.9rem;">Monitoreo sin interrumpir la colonia</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-bell" style="color:var(--gold);font-size:.75rem;"></i>
+            </div>
+            <span style="color:rgba(232,238,246,0.7);font-size:.9rem;">Alertas automáticas en tiempo real</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-chart-line" style="color:var(--gold);font-size:.75rem;"></i>
+            </div>
+            <span style="color:rgba(232,238,246,0.7);font-size:.9rem;">Historial de datos para toma de decisiones</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(14,202,212,0.12);border:1px solid rgba(14,202,212,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-globe" style="color:var(--cyan);font-size:.75rem;"></i>
+            </div>
+            <span style="color:rgba(232,238,246,0.7);font-size:.9rem;">Plataforma web accesible desde cualquier dispositivo</span>
+          </div>
+        </div>
+      </div>
+
+      
+
+          <!-- ══ APICULTOR GLOWING ILLUSTRATION — SVG externo ══ -->
+          <img src="apic.png" alt="Ilustración del apicultor BeeHappy" class="keeper-glow" style="width:100%;height:auto;max-width:100%;filter:drop-shadow(0 20px 80px rgba(245,166,35,0.3));">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ CARACTERÍSTICAS ══════════════════ -->
+<section id="caracteristicas" class="py-28 px-6 lg:px-12 relative z-10">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 50%,rgba(14,202,212,0.05),transparent);pointer-events:none;"></div>
+
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-microchip text-xs"></i> Variables de Monitoreo
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4 leading-tight" style="font-size:clamp(2rem,4vw,3rem);">
+        Cuatro variables,<br/><span style="color:var(--gold);">una colmena perfecta</span>
+      </h2>
+      <p class="sr sr-d2 max-w-lg mx-auto" style="color:rgba(232,238,246,0.55);">Sensores de alta precisión registran y transmiten datos continúos al servidor central para análisis en tiempo real.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="feat-card sr sr-d1">
+        <div class="feat-icon mb-5"><i class="fa-solid fa-temperature-three-quarters"></i></div>
+        <h3 class="font-display font-bold text-white text-lg mb-2">Temperatura</h3>
+        <p style="color:rgba(232,238,246,0.55);font-size:.87rem;line-height:1.7;">Monitoreo continuo de la temperatura interna. Detecta cambios que indican estrés, enfermedades o actividad reproductiva anormal.</p>
+        <div class="feat-bar mt-5" style="width:75%;"></div>
+        <div class="flex justify-between mt-2">
+          <span style="font-size:.72rem;color:rgba(255,255,255,0.3);">Rango óptimo</span>
+          <span style="font-size:.72rem;color:var(--gold);font-weight:600;">32–35 °C</span>
+        </div>
+      </div>
+
+      <div class="feat-card sr sr-d2">
+        <div class="feat-icon mb-5"><i class="fa-solid fa-droplet"></i></div>
+        <h3 class="font-display font-bold text-white text-lg mb-2">Humedad</h3>
+        <p style="color:rgba(232,238,246,0.55);font-size:.87rem;line-height:1.7;">Control de la humedad relativa para prevenir hongos, fermentación de miel y garantizar la calidad de la cosecha.</p>
+        <div class="feat-bar mt-5" style="width:60%;background:linear-gradient(90deg,var(--cyan),transparent);"></div>
+        <div class="flex justify-between mt-2">
+          <span style="font-size:.72rem;color:rgba(255,255,255,0.3);">Rango óptimo</span>
+          <span style="font-size:.72rem;color:var(--cyan);font-weight:600;">50–60 %</span>
+        </div>
+      </div>
+
+      <div class="feat-card sr sr-d3">
+        <div class="feat-icon mb-5"><i class="fa-solid fa-weight-scale"></i></div>
+        <h3 class="font-display font-bold text-white text-lg mb-2">Peso</h3>
+        <p style="color:rgba(232,238,246,0.55);font-size:.87rem;line-height:1.7;">Seguimiento de la producción de miel en tiempo real. Detecta enjambrazones, robos o pérdidas repentinas de colonia.</p>
+        <div class="feat-bar mt-5" style="width:85%;"></div>
+        <div class="flex justify-between mt-2">
+          <span style="font-size:.72rem;color:rgba(255,255,255,0.3);">Ejemplo actual</span>
+          <span style="font-size:.72rem;color:var(--gold);font-weight:600;">37.5 Kg</span>
+        </div>
+      </div>
+
+      <div class="feat-card sr sr-d4">
+        <div class="feat-icon mb-5"><i class="fa-solid fa-wave-square"></i></div>
+        <h3 class="font-display font-bold text-white text-lg mb-2">Actividad Sonora</h3>
+        <p style="color:rgba(232,238,246,0.55);font-size:.87rem;line-height:1.7;">Análisis del patrón de zumbido de la colonia para identificar agitación, pérdida de reina o riesgo de enjambrazón inminente.</p>
+        <div class="feat-bar mt-5" style="width:50%;background:linear-gradient(90deg,var(--cyan),transparent);"></div>
+        <div class="flex justify-between mt-2">
+          <span style="font-size:.72rem;color:rgba(255,255,255,0.3);">Frecuencia normal</span>
+          <span style="font-size:.72rem;color:var(--cyan);font-weight:600;">50 Hz</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ INTELIGENCIA ARTIFICIAL ══════════════════ -->
+<section id="ia" class="py-28 px-6 lg:px-12 relative z-10">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(14,202,212,0.05),transparent 65%),radial-gradient(ellipse 40% 40% at 15% 70%,rgba(245,166,35,0.05),transparent);pointer-events:none;"></div>
+
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-16">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-brain text-xs"></i> Inteligencia Artificial
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4 leading-tight" style="font-size:clamp(2rem,4vw,3rem);">
+        BeeHappy aprende,<br/><span style="background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">evoluciona y responde</span>
+      </h2>
+      <p class="sr sr-d2 max-w-xl mx-auto" style="color:rgba(232,238,246,0.55);">
+        Más allá del monitoreo, BeeHappy integra dos módulos de IA que optimizan automáticamente los parámetros de la colmena y te permiten consultar el estado de tus abejas en lenguaje natural.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+
+      <!-- Card 1: Algoritmo Genético -->
+      <div class="ai-card sr sr-d1">
+        <div class="ai-card-header">
+          <div class="ai-tag">
+            <i class="fa-solid fa-dna text-xs"></i> BEEHIVECTRL | Algoritmo Genético
+          </div>
+          <h3 class="font-display font-bold text-white text-2xl mb-3 leading-tight">
+            Optimización evolutiva<br/>de parámetros apícolas
+          </h3>
+          <p style="color:rgba(232,238,246,0.55);font-size:.9rem;line-height:1.75;margin-bottom:1.25rem;">
+            Un algoritmo genético inspecciona continuamente el historial de datos de temperatura, humedad y peso, y evoluciona generación a generación para encontrar las condiciones óptimas de la colmena. El sistema ajusta automáticamente umbrales de alerta y sugiere acciones correctivas basándose en cientos de iteraciones de selección natural computacional.
+          </p>
+          <!-- Feature bullets -->
+          <div class="flex flex-col gap-2.5">
+            <div class="flex items-center gap-3">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-rotate" style="color:var(--gold);font-size:.7rem;"></i>
+              </div>
+              <span style="color:rgba(232,238,246,0.65);font-size:.85rem;">Evoluciona con cada ciclo de datos de la colmena</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-sliders" style="color:var(--gold);font-size:.7rem;"></i>
+              </div>
+              <span style="color:rgba(232,238,246,0.65);font-size:.85rem;">Ajuste automático de umbrales de alerta óptimos</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-chart-bar" style="color:var(--gold);font-size:.7rem;"></i>
+              </div>
+              <span style="color:rgba(232,238,246,0.65);font-size:.85rem;">Visualización de la convergencia evolutiva</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot -->
+        <div class="ai-screenshot">
+          <img src="ag.png" alt="Algoritmo Genético BeeHappy" style="width:100%;display:block;object-fit:cover;"/>
+        </div>
+      </div>
+
+      <!-- Card 2: Agente IA -->
+      <div class="ai-card sr sr-d2">
+        <div class="ai-card-header">
+          <div class="ai-tag cyan">
+            <i class="fa-solid fa-robot text-xs"></i>Meli | Agente Conversacional
+          </div>
+          <h3 class="font-display font-bold text-white text-2xl mb-3 leading-tight">
+            Consulta tu colmena<br/>en lenguaje natural
+          </h3>
+          <p style="color:rgba(232,238,246,0.55);font-size:.9rem;line-height:1.75;margin-bottom:1.25rem;">
+            Un agente inteligente conectado directamente a los datos de tus colmenas responde preguntas en tiempo real: ¿Cuál es la temperatura actual? ¿Cuándo fue la última alerta? ¿Qué colmena tiene mayor producción este mes? También resuelve dudas generales sobre apicultura, salud de abejas y buenas prácticas de manejo.
+          </p>
+          <!-- Feature bullets -->
+          <div class="flex flex-col gap-2.5">
+            <div class="flex items-center gap-3">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(14,202,212,0.1);border:1px solid rgba(14,202,212,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-comments" style="color:var(--cyan);font-size:.7rem;"></i>
+              </div>
+              <span style="color:rgba(232,238,246,0.65);font-size:.85rem;">Preguntas sobre estadísticas en tiempo real</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(14,202,212,0.1);border:1px solid rgba(14,202,212,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-bee" style="color:var(--cyan);font-size:.7rem;"></i>
+              </div>
+              <span style="color:rgba(232,238,246,0.65);font-size:.85rem;">Asesoría experta en salud y manejo apícola</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(14,202,212,0.1);border:1px solid rgba(14,202,212,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-language" style="color:var(--cyan);font-size:.7rem;"></i>
+              </div>
+              <span style="color:rgba(232,238,246,0.65);font-size:.85rem;">Interfaz conversacional en español</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot -->
+        <div class="ai-screenshot">
+          <img src="agente.png" alt="Agente IA BeeHappy" style="width:100%;display:block;object-fit:cover;"/>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom stat bar -->
+    <div class="sr sr-d3 mt-10 glass-strong p-6 flex flex-wrap gap-6 items-center justify-center md:justify-between">
+      <div class="flex items-center gap-3">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.2);display:flex;align-items:center;justify-content:center;">
+          <i class="fa-solid fa-microchip" style="color:var(--gold);"></i>
+        </div>
+        <div>
+          <p class="font-display font-bold text-white text-sm">Optimización continua</p>
+          <p style="color:rgba(255,255,255,0.4);font-size:.75rem;">El algoritmo mejora con cada nuevo ciclo de datos</p>
+        </div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(255,255,255,0.08);" class="hidden md:block"></div>
+      <div class="flex items-center gap-3">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(14,202,212,0.08);border:1px solid rgba(14,202,212,0.2);display:flex;align-items:center;justify-content:center;">
+          <i class="fa-solid fa-bolt" style="color:var(--cyan);"></i>
+        </div>
+        <div>
+          <p class="font-display font-bold text-white text-sm">Respuestas inmediatas</p>
+          <p style="color:rgba(255,255,255,0.4);font-size:.75rem;">El agente accede a datos en tiempo real de tu apiario</p>
+        </div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(255,255,255,0.08);" class="hidden md:block"></div>
+      <div class="flex items-center gap-3">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.18);display:flex;align-items:center;justify-content:center;">
+          <i class="fa-solid fa-seedling" style="color:var(--gold);"></i>
+        </div>
+        <div>
+          <p class="font-display font-bold text-white text-sm">IA aplicada a la apicultura</p>
+          <p style="color:rgba(255,255,255,0.4);font-size:.75rem;">Tecnología de vanguardia adaptada al campo mexicano</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════ BENEFICIOS ══════════════════ -->
+<section id="beneficios" class="py-28 px-6 lg:px-12 relative z-10">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 20% 50%,rgba(245,166,35,0.05),transparent);pointer-events:none;"></div>
+
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-chart-line text-xs"></i> Objetivos y Beneficios
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4" style="font-size:clamp(1.9rem,4vw,3rem);">
+        Transformando la apicultura<br/><span style="color:var(--gold);">con datos reales</span>
+      </h2>
+    </div>
+
+    <div class="flex flex-col gap-4">
+
+      <div class="benefit-row sr sr-d1" onclick="toggleBenefit(this)">
+        <div class="benefit-header">
+          <div class="benefit-header-left">
+            <div class="benefit-icon-wrap"><i class="fa-solid fa-shield-virus"></i></div>
+            <div>
+              <p class="font-display font-bold text-white text-base">Prevención temprana de enfermedades</p>
+              <p style="color:rgba(255,255,255,0.4);font-size:.8rem;">Detección automática de anomalías</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-down benefit-chevron"></i>
+        </div>
+        <div class="benefit-body">
+          <p style="color:rgba(232,238,246,0.6);line-height:1.75;font-size:.9rem;">Los sensores detectan cambios en temperatura, humedad y actividad sonora que son indicadores tempranos de enfermedades como varroa, loque americana o nosemosis. Las alertas automáticas permiten actuar antes de que la colonia colapse, reduciendo hasta un 40% las pérdidas por enfermedad no detectada.</p>
+        </div>
+      </div>
+
+      <div class="benefit-row sr sr-d2" onclick="toggleBenefit(this)">
+        <div class="benefit-header">
+          <div class="benefit-header-left">
+            <div class="benefit-icon-wrap"><i class="fa-solid fa-magnifying-glass-minus"></i></div>
+            <div>
+              <p class="font-display font-bold text-white text-base">Reducción de inspecciones manuales</p>
+              <p style="color:rgba(255,255,255,0.4);font-size:.8rem;">Menos intrusiones, más bienestar</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-down benefit-chevron"></i>
+        </div>
+        <div class="benefit-body">
+          <p style="color:rgba(232,238,246,0.6);line-height:1.75;font-size:.9rem;">Cada apertura física de la colmena genera estrés en las abejas y puede comprometer la producción. BeeHappy reduce las inspecciones manuales en un 60–70%, interviniendo solo cuando los datos lo indican. Esto mejora el bienestar de la colonia y optimiza el tiempo del apicultor.</p>
+        </div>
+      </div>
+
+      <div class="benefit-row sr sr-d3" onclick="toggleBenefit(this)">
+        <div class="benefit-header">
+          <div class="benefit-header-left">
+            <div class="benefit-icon-wrap"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <div>
+              <p class="font-display font-bold text-white text-base">Maximización de la productividad apícola</p>
+              <p style="color:rgba(255,255,255,0.4);font-size:.8rem;">Datos históricos para mejores cosechas</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-down benefit-chevron"></i>
+        </div>
+        <div class="benefit-body">
+          <p style="color:rgba(232,238,246,0.6);line-height:1.75;font-size:.9rem;">El registro continuo de peso permite conocer exactamente el momento óptimo de cosecha, evitar extracciones prematuras y correlacionar variables ambientales con picos de producción. Los apicultores que monitorizan el peso en tiempo real reportan incrementos de producción de hasta 25%.</p>
+        </div>
+      </div>
+
+      <div class="benefit-row sr sr-d4" onclick="toggleBenefit(this)">
+        <div class="benefit-header">
+          <div class="benefit-header-left">
+            <div class="benefit-icon-wrap"><i class="fa-solid fa-leaf"></i></div>
+            <div>
+              <p class="font-display font-bold text-white text-base">Impacto ambiental sostenible</p>
+              <p style="color:rgba(255,255,255,0.4);font-size:.8rem;">Apicultura del siglo XXI</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-down benefit-chevron"></i>
+        </div>
+        <div class="benefit-body">
+          <p style="color:rgba(232,238,246,0.6);line-height:1.75;font-size:.9rem;">Un manejo más preciso reduce el uso de tratamientos químicos, minimiza el estrés en las colonias y contribuye a la conservación de las abejas, fundamentales para la polinización y el equilibrio ecológico. BeeHappy impulsa la adopción tecnológica en comunidades rurales de Chiapas.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ A QUIÉN VA DIRIGIDO ══════════════════ -->
+<section id="dirigido" class="py-28 px-6 lg:px-12 relative z-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-users text-xs"></i> ¿A quién va dirigido?
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4" style="font-size:clamp(1.9rem,4vw,3rem);">
+        Diseñado para <span style="color:var(--gold);">cada actor</span> del sector apícola
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="tilt-card sr sr-d1" data-tilt>
+        <div class="tilt-shine"></div>
+        <div class="tilt-inner">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(245,166,35,0.25),rgba(245,166,35,0.05));border:1px solid rgba(245,166,35,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+            <i class="fa-solid fa-person-digging" style="color:var(--gold);font-size:1.5rem;"></i>
+          </div>
+          <h3 class="font-display font-bold text-white text-xl mb-3">Productores Apícolas</h3>
+          <p style="color:rgba(232,238,246,0.55);line-height:1.75;font-size:.9rem;margin-bottom:1.5rem;">Apicultores independientes y pequeños productores que desean optimizar su operación con tecnología accesible. Desde 1 hasta cientos de colmenas.</p>
+          <div class="flex flex-wrap gap-2">
+            <span style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);color:rgba(255,203,69,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Independientes</span>
+            <span style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);color:rgba(255,203,69,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Cooperativas</span>
+            <span style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);color:rgba(255,203,69,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Asociaciones</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tilt-card sr sr-d2" data-tilt>
+        <div class="tilt-shine"></div>
+        <div class="tilt-inner">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(14,202,212,0.2),rgba(14,202,212,0.04));border:1px solid rgba(14,202,212,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+            <i class="fa-solid fa-flask-vial" style="color:var(--cyan);font-size:1.5rem;"></i>
+          </div>
+          <h3 class="font-display font-bold text-white text-xl mb-3">Centros de Investigación</h3>
+          <p style="color:rgba(232,238,246,0.55);line-height:1.75;font-size:.9rem;margin-bottom:1.5rem;">Instituciones académicas y científicas que requieren datos de alta precisión y continuidad para estudios de sustentabilidad, biología apícola y cambio climático.</p>
+          <div class="flex flex-wrap gap-2">
+            <span style="background:rgba(14,202,212,0.08);border:1px solid rgba(14,202,212,0.2);color:rgba(14,202,212,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Universidades</span>
+            <span style="background:rgba(14,202,212,0.08);border:1px solid rgba(14,202,212,0.2);color:rgba(14,202,212,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Laboratorios</span>
+            <span style="background:rgba(14,202,212,0.08);border:1px solid rgba(14,202,212,0.2);color:rgba(14,202,212,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Sustentabilidad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tilt-card sr sr-d3" data-tilt>
+        <div class="tilt-shine"></div>
+        <div class="tilt-inner">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(100,160,255,0.2),rgba(100,160,255,0.04));border:1px solid rgba(100,160,255,0.2);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+            <i class="fa-solid fa-landmark-dome" style="color:#8BB8FF;font-size:1.5rem;"></i>
+          </div>
+          <h3 class="font-display font-bold text-white text-xl mb-3">Dependencias Gubernamentales</h3>
+          <p style="color:rgba(232,238,246,0.55);line-height:1.75;font-size:.9rem;margin-bottom:1.5rem;">Secretarías de agricultura, ganadería y pesca, así como programas de desarrollo rural que buscan modernizar y digitalizar el sector apícola en Chiapas y México.</p>
+          <div class="flex flex-wrap gap-2">
+            <span style="background:rgba(100,160,255,0.08);border:1px solid rgba(100,160,255,0.2);color:rgba(139,184,255,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">SAGARPA</span>
+            <span style="background:rgba(100,160,255,0.08);border:1px solid rgba(100,160,255,0.2);color:rgba(139,184,255,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Chiapas</span>
+            <span style="background:rgba(100,160,255,0.08);border:1px solid rgba(100,160,255,0.2);color:rgba(139,184,255,0.8);font-size:.72rem;padding:.25rem .7rem;border-radius:100px;font-weight:600;">Rural</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ EQUIPO ══════════════════ -->
+<section id="equipo" class="py-28 px-6 lg:px-12 relative z-10">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(245,166,35,0.04),transparent);pointer-events:none;"></div>
+
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-people-group text-xs"></i> Nuestro Equipo
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4" style="font-size:clamp(1.9rem,4vw,3rem);">
+        Las mentes detrás de<br/><span style="color:var(--gold);">BeeHappy</span>
+      </h2>
+      <p class="sr sr-d2 max-w-md mx-auto" style="color:rgba(232,238,246,0.5);">Ingeniería en Tecnologías de la Información e Innovación Digital | Universidad Politécnica de Chiapas</p>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+      <div class="team-card sr sr-d1">
+        <div style="padding:2rem 1.5rem 0; text-align:center;">
+          <div class="team-avatar-ring">
+            <img src="carlos.jpeg" alt="Carlos Daniel Solís Aguilar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+          </div>
+          <h3 class="font-display font-bold text-white text-base leading-tight">Carlos Daniel<br/>Solís Aguilar</h3>
+          <div class="flex justify-center gap-2 pb-6">
+            <a href="https://www.linkedin.com/in/carlos-daniel-solis-aguilar-53393a2a1/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/carlos22101" target="_blank" rel="noopener" class="social-link" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:233429@ids.upchiapas.edu.mx" class="social-link" aria-label="Correo"><i class="fa-solid fa-envelope"></i></a>
+          </div>
+        </div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.4;"></div>
+      </div>
+
+      <div class="team-card sr sr-d2">
+        <div style="padding:2rem 1.5rem 0; text-align:center;">
+          <div class="team-avatar-ring" style="background:linear-gradient(135deg,rgba(245,166,35,0.25),rgba(245,166,35,0.08));border-color:rgba(245,166,35,0.35);">
+            <img src="montse.jpeg" alt="Alicia Montserrat Valenti Ruiz" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+          </div>
+          <h3 class="font-display font-bold text-white text-base leading-tight">Alicia Montserrat<br/>Valenti Ruiz</h3>
+          <div class="flex justify-center gap-2 pb-6">
+            <a href="https://www.linkedin.com/in/aliciamontserratvalentiruiz16/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/MontseValenti16" target="_blank" rel="noopener" class="social-link" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:valentiruizaliciamontserrat@gmail.com" class="social-link" aria-label="Correo"><i class="fa-solid fa-envelope"></i></a>
+          </div>
+        </div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.4;"></div>
+      </div>
+
+      <div class="team-card sr sr-d3">
+        <div style="padding:2rem 1.5rem 0; text-align:center;">
+          <div class="team-avatar-ring" style="background:linear-gradient(135deg,rgba(100,160,255,0.25),rgba(14,202,212,0.1));border-color:rgba(100,160,255,0.35);">
+            <img src="rodri.jpeg" alt="Rodrigo Emilio Campuzano Culebro" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+          </div>
+          <h3 class="font-display font-bold text-white text-base leading-tight">Rodrigo Emilio<br/>Campuzano Culebro</h3>
+          <div class="flex justify-center gap-2 pb-6">
+            <a href="https://www.linkedin.com/in/rodrigo-campuzano-92393b2a1/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/RodrigoCampuzano" target="_blank" rel="noopener" class="social-link" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:camcluod@gmail.com" class="social-link" aria-label="Correo"><i class="fa-solid fa-envelope"></i></a>
+          </div>
+        </div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,#8BB8FF,transparent);opacity:0.4;"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ GALERÍA ══════════════════ -->
+<section id="galeria" class="py-28 px-6 lg:px-12 relative z-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-camera text-xs"></i> Galería del Proyecto
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4" style="font-size:clamp(1.9rem,4vw,3rem);">
+        El proyecto en <span style="color:var(--gold);">imágenes</span>
+      </h2>
+      <p class="sr sr-d2 max-w-md mx-auto" style="color:rgba(232,238,246,0.5);">Explora nuestra trayectoria a través de las pruebas en campo, el desarrollo de nuestro prototipo funcional y nuestras exhibiciones tecnológicas destacadas.</p>
+    </div>
+
+    <div class="gallery-grid sr">
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="Colmena.jpeg" alt="Colmena BeeHappy" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Colmena</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="Detalles.png" alt="Detalles BeeHappy" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Detalles</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="Echisac2025.jpeg" alt="Echisac 2025" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Echisac 2025</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="Feria emprendedor.jpeg" alt="Feria Emprendedor" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Feria Emprendedor</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="Proyecto..jpeg" alt="Proyecto BeeHappy" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Proyecto</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="equipocampo.jpeg" alt="Equipo en campo" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Equipo en campo</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="instalaciónpruebas.jpeg" alt="Instalación en apiario" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Instalación en apiario</span></div>
+      </div>
+      <div class="gallery-item gallery-item-clickable" onclick="openGalleryModal(this)">
+        <img src="Login.png" alt="Login BeeHappy" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Login</span></div>
+      </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div class="gallery-modal" id="galleryModal" onclick="if(event.target === this) closeGalleryModal()">
+      <div class="gallery-modal-content">
+        <button class="gallery-modal-close" onclick="closeGalleryModal()"><i class="fa-solid fa-xmark"></i></button>
+        <img class="gallery-modal-image" id="galleryModalImage" src="" alt="Gallery Image"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ CONTACTO (solo canales, sin formulario) ══════════════════ -->
+<section id="contacto" class="py-28 px-6 lg:px-12 relative z-10">
+  <div style="position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(11,30,54,0.6),transparent);pointer-events:none;"></div>
+
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="section-pill sr mb-5">
+        <i class="fa-solid fa-comments text-xs"></i> Contáctanos
+      </div>
+      <h2 class="font-display font-black text-white sr sr-d1 mb-4" style="font-size:clamp(1.9rem,4vw,3rem);">
+        Conectemos tu<br/><span style="color:var(--gold);">colmena al futuro</span>
+      </h2>
+      <p class="sr sr-d2 max-w-lg mx-auto" style="color:rgba(232,238,246,0.5);">¿Tienes preguntas sobre BeeHappy? Escríbenos directamente por cualquiera de estos canales.</p>
+    </div>
+
+    <div class="sr sr-d1 flex flex-col gap-4">
+      <!-- Email -->
+      <a href="mailto:beehappysuport@gmail.com"
+         class="flex items-center gap-5 glass p-5 rounded-2xl group"
+         style="text-decoration:none;border:1px solid rgba(255,255,255,0.08);transition:all 0.3s;"
+         onmouseover="this.style.borderColor='rgba(245,166,35,0.4)';this.style.background='rgba(245,166,35,0.06)'"
+         onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(255,255,255,0.05)'">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(245,166,35,0.2),rgba(245,166,35,0.05));border:1px solid rgba(245,166,35,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fa-solid fa-envelope" style="color:var(--gold);font-size:1.3rem;"></i>
+        </div>
+        <div class="flex-1">
+          <p class="font-display font-bold text-white text-sm mb-0.5">Correo electrónico</p>
+          <p style="color:var(--gold);font-size:.9rem;">beehappysuport@gmail.com</p>
+          <p style="color:rgba(255,255,255,0.35);font-size:.75rem;margin-top:.15rem;">Respondemos en menos de 24 horas</p>
+        </div>
+        <i class="fa-solid fa-arrow-right" style="color:rgba(255,255,255,0.25);font-size:.9rem;"></i>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/profile.php?id=61578282094905&locale=es_LA" target="_blank" rel="noopener"
+         class="flex items-center gap-5 glass p-5 rounded-2xl"
+         style="text-decoration:none;border:1px solid rgba(255,255,255,0.08);transition:all 0.3s;"
+         onmouseover="this.style.borderColor='rgba(24,119,242,0.5)';this.style.background='rgba(24,119,242,0.08)'"
+         onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(255,255,255,0.05)'">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(24,119,242,0.2),rgba(24,119,242,0.05));border:1px solid rgba(24,119,242,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fa-brands fa-facebook-f" style="color:#4A90E2;font-size:1.3rem;"></i>
+        </div>
+        <div class="flex-1">
+          <p class="font-display font-bold text-white text-sm mb-0.5">Facebook</p>
+          <p style="color:#4A90E2;font-size:.9rem;">@ApiTech</p>
+          <p style="color:rgba(255,255,255,0.35);font-size:.75rem;margin-top:.15rem;">Síguenos para novedades del proyecto</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square" style="color:rgba(255,255,255,0.25);font-size:.85rem;"></i>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/apitech25/" target="_blank" rel="noopener"
+         class="flex items-center gap-5 glass p-5 rounded-2xl"
+         style="text-decoration:none;border:1px solid rgba(255,255,255,0.08);transition:all 0.3s;"
+         onmouseover="this.style.borderColor='rgba(225,48,108,0.5)';this.style.background='rgba(225,48,108,0.07)'"
+         onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(255,255,255,0.05)'">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(225,48,108,0.2),rgba(131,58,180,0.1));border:1px solid rgba(225,48,108,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fa-brands fa-instagram" style="font-size:1.35rem;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
+        </div>
+        <div class="flex-1">
+          <p class="font-display font-bold text-white text-sm mb-0.5">Instagram</p>
+          <p style="font-size:.9rem;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;">@apitech25</p>
+          <p style="color:rgba(255,255,255,0.35);font-size:.75rem;margin-top:.15rem;">Síguenos para novedades del proyecto</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square" style="color:rgba(255,255,255,0.25);font-size:.85rem;"></i>
+      </a>
+
+      <!-- Location note -->
+      <div class="flex items-center gap-4 mt-2 p-4 rounded-xl" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+        <i class="fa-solid fa-location-dot" style="color:rgba(245,166,35,0.6);font-size:1.1rem;flex-shrink:0;"></i>
+        <p style="color:rgba(255,255,255,0.4);font-size:.85rem;line-height:1.5;">Universidad Politécnica de Chiapas · Suchiapa, Chiapas, México</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="py-14 px-6 lg:px-12 relative z-10" style="background:rgba(6,15,28,0.8);backdrop-filter:blur(8px);">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="grid md:grid-cols-3 gap-10 mb-12 pb-12" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src="Logo.png" alt="BeeHappy Logo" class="w-10 h-10 rounded-xl object-cover">
+          <span class="font-display font-black text-xl text-white">Bee<span style="color:var(--gold);">Happy</span></span>
+        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:.85rem;line-height:1.7;max-width:240px;">Sweet technology for a sustainable future. Sistema IoT de monitoreo inteligente para colmenas.</p>
+      </div>
+
+      <div>
+        <p class="font-display font-bold text-white text-sm mb-4" style="letter-spacing:.06em;">NAVEGACIÓN</p>
+        <div class="flex flex-col gap-2.5">
+          <a href="#que-es"          class="nav-link text-sm" style="color:rgba(255,255,255,0.45);">¿Qué es BeeHappy?</a>
+          <a href="#caracteristicas" class="nav-link text-sm" style="color:rgba(255,255,255,0.45);">Características</a>
+          <a href="#ia"              class="nav-link text-sm" style="color:rgba(255,255,255,0.45);">Inteligencia Artificial</a>
+          <a href="#beneficios"      class="nav-link text-sm" style="color:rgba(255,255,255,0.45);">Beneficios</a>
+          <a href="#equipo"          class="nav-link text-sm" style="color:rgba(255,255,255,0.45);">Equipo</a>
+          <a href="#contacto"        class="nav-link text-sm" style="color:rgba(255,255,255,0.45);">Contacto</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="font-display font-bold text-white text-sm mb-4" style="letter-spacing:.06em;">RESPALDO INSTITUCIONAL</p>
+        <div class="flex flex-col gap-3">
+          <div class="footer-logo-placeholder">
+            <i class="fa-solid fa-university mr-2 opacity-50"></i> Universidad Politécnica de Chiapas
+          </div>
+          <div class="footer-logo-placeholder">
+            <i class="fa-solid fa-atom mr-2 opacity-50"></i> Ing. en TI e Innovación Digital
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <p style="color:rgba(255,255,255,0.25);font-size:.8rem;">© 2026 BeeHappy — Universidad Politécnica de Chiapas. Todos los derechos reservados.</p>
+      <div class="flex items-center gap-3">
+        <a href="mailto:beehappysuport@gmail.com" class="social-link" aria-label="Correo"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61578282094905&locale=es_LA" target="_blank" rel="noopener" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/apitech25/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+      <div style="color:rgba(255,255,255,0.2);font-size:.78rem;display:flex;align-items:center;gap:.4rem;">
+        <i class="fa-solid fa-code"></i> Hecho con pasión en Chiapas, México
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ══════════════════ JAVASCRIPT ══════════════════ -->
+<script>
+  /* ─── Custom cursor ─────────────────────────────── */
+  const dot  = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  function animCursor(){
+    dot.style.left  = mx+'px'; dot.style.top = my+'px';
+    rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a,button,[data-tilt]').forEach(el => {
+    el.addEventListener('mouseenter',()=>{ ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='var(--gold)'; });
+    el.addEventListener('mouseleave',()=>{ ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(245,166,35,0.5)'; });
+  });
+
+  /* ─── Navbar scroll ─────────────────────────────── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), {passive:true});
+
+  /* ─── Mobile nav ────────────────────────────────── */
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('mobile-nav').classList.toggle('open'));
+  function closeMobileNav(){ document.getElementById('mobile-nav').classList.remove('open'); }
+
+  /* ─── Scroll reveal ─────────────────────────────── */
+  const srEls = document.querySelectorAll('.sr');
+  const srObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('visible'); srObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.10 });
+  srEls.forEach(el => srObs.observe(el));
+
+  /* ─── Expandable benefits ───────────────────────── */
+  function toggleBenefit(row){
+    const wasOpen = row.classList.contains('open');
+    document.querySelectorAll('.benefit-row').forEach(r => r.classList.remove('open'));
+    if(!wasOpen) row.classList.add('open');
+  }
+
+  /* ─── Gallery Modal ─────────────────────────────── */
+  function openGalleryModal(element) {
+    const img = element.querySelector('img');
+    const modal = document.getElementById('galleryModal');
+    const modalImg = document.getElementById('galleryModalImage');
+    if(img && modal && modalImg) {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+  function closeGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') closeGalleryModal();
+  });
+
+  /* ─── 3D Tilt effect ────────────────────────────── */
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r  = card.getBoundingClientRect();
+      const cx = r.left + r.width  / 2;
+      const cy = r.top  + r.height / 2;
+      const dx = (e.clientX - cx) / (r.width  / 2);
+      const dy = (e.clientY - cy) / (r.height / 2);
+      card.style.transform = `perspective(800px) rotateX(${dy * -10}deg) rotateY(${dx * 10}deg) translateZ(8px)`;
+      const shine = card.querySelector('.tilt-shine');
+      if(shine){
+        shine.style.background = `radial-gradient(circle at ${50+dx*30}% ${50+dy*30}%, rgba(255,255,255,0.12), transparent 65%)`;
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0)';
+      card.style.transition = 'transform 0.5s cubic-bezier(.25,.8,.25,1)';
+      setTimeout(()=>card.style.transition='', 500);
+    });
+  });
+</script>
+
+</body>
+</html>
